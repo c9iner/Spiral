@@ -1,14 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
     public float acceleration = 100;
+    public float deceleration = 0.9f;
     public float maxSpeed = 10;
     public float jump = 500;
     public int maxJumps = 2;
     public GameObject gravityCenter;
+    public GameObject goal;
     public float gravityStrength = 20;
     public float furryness = 5.5f;
     public float eyeSize = 3.2f;
@@ -18,54 +21,84 @@ public class PlayerMovement : MonoBehaviour {
     private Vector3 _startPosition;
     private Rigidbody _rigidBody;
     private int _remainingJumps;
+    private Vector3 _gravityVector;
 
-	void Start ()
+    void Start ()
     {
         _startPosition = transform.position;
         _rigidBody = GetComponent<Rigidbody>();
     }
-	
-	void FixedUpdate ()
+
+    void Update()
     {
-        var gravityVector = (transform.position - gravityCenter.transform.position).normalized;
-        Physics.gravity = gravityVector * gravityStrength;
+        
+        // Gravity
+        _gravityVector = (transform.position - gravityCenter.transform.position).normalized;
+        Physics.gravity = _gravityVector * gravityStrength;
+        Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
 
-        var rotation = Quaternion.LookRotation(gravityVector);
-        rotation *= Quaternion.Euler(rotationOffset.x, rotationOffset.y, rotationOffset.z);
-        transform.rotation = rotation;
+        // Align character up axis with gravity
+        float axis = Vector3.Cross(-transform.up, _gravityVector).z < 0 ? -1 : 1;
+        float alignAngle = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(-transform.up, _gravityVector));
+        if (alignAngle > 0.01f)
+        {
+            transform.Rotate(new Vector3(0, 0, axis), alignAngle);
+        }
 
+        // Reset
         if (Input.GetKey(KeyCode.R))
-            transform.position = _startPosition;
+        {
+            Reset();
+        }
 
         // Move Left
         if (Input.GetKey(KeyCode.A))
         {
-            _rigidBody.AddForce(new Vector3(-acceleration, 0, 0));
-            if (_rigidBody.velocity.x < -maxSpeed)
-                _rigidBody.velocity = new Vector3(-maxSpeed, _rigidBody.velocity.y, _rigidBody.velocity.z);
+            var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, 1));
+            _rigidBody.AddForce(leftVector * acceleration);
         }
 
         // Move Right
         if (Input.GetKey(KeyCode.D))
         {
-            _rigidBody.AddForce(new Vector3(acceleration, 0, 0));
-            if (_rigidBody.velocity.x > maxSpeed)
-                _rigidBody.velocity = new Vector3(maxSpeed, _rigidBody.velocity.y, _rigidBody.velocity.z);
+            var rightVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, -1));
+            _rigidBody.AddForce(rightVector * acceleration);
         }
-
-        // Deceleration
-        _rigidBody.velocity = new Vector3(_rigidBody.velocity.x*0.8f, _rigidBody.velocity.y, _rigidBody.velocity.z);
 
         // Jump
         if (Input.GetKeyDown(KeyCode.W) && _remainingJumps > 0)
         {
             _remainingJumps--;
-            _rigidBody.AddForce(new Vector3(0, jump, 0));
+            _rigidBody.AddForce(-_gravityVector * jump);
+        }
+
+        // Calculate new velocity
+        // Max speed and deceleration are only applied in the direction perpendicular to gravity
+        var playerForward = transform.right * axis;
+        var velocityForward = playerForward * Vector3.Dot(playerForward, _rigidBody.velocity);
+        if (velocityForward.sqrMagnitude > maxSpeed * maxSpeed)
+            velocityForward = playerForward * maxSpeed;
+        velocityForward *= deceleration;
+
+        var velocityUp = _gravityVector * Vector3.Dot(_gravityVector, _rigidBody.velocity);
+
+        _rigidBody.velocity = velocityUp + velocityForward;
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        _remainingJumps = maxJumps;
+
+        if (col.gameObject.name == "Goal")
+        {
+            Reset();
         }
     }
 
-    void OnCollisionEnter()
+    void Reset()
     {
-        _remainingJumps = maxJumps;
+        transform.position = _startPosition;
+        transform.rotation = Quaternion.identity;
+        _rigidBody.velocity = Vector3.zero;
     }
 }
