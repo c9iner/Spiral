@@ -18,7 +18,7 @@ public class EnemyGuard : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        var xOffset = Mathf.Sin(Time.fixedTime * patrolSpeed) / 2 * patrolDistance + patrolPhase;
+        var xOffset = Mathf.Sin(Time.fixedTime * patrolSpeed + patrolPhase) / 2 * patrolDistance;
         body.transform.localPosition = new Vector3(_startPosition.x + xOffset, _startPosition.y, _startPosition.z);
     }
 }

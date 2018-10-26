@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
-
+public class Player : MonoBehaviour
+{
     public float acceleration = 100;
     public float deceleration = 0.9f;
     public float maxSpeed = 10;
@@ -25,6 +25,7 @@ public class Player : MonoBehaviour {
     private float _gravityDirection = -1;
     private bool _isTouchingGround = false;
     private bool _isDying = false;
+    private int _numStarsTaken = 0;
 
     void Awake ()
     {
@@ -110,6 +111,13 @@ public class Player : MonoBehaviour {
         if (col.gameObject.name == "GravityFlip")
         {
             _gravityDirection *= -1;
+        }
+
+        var star = col.gameObject.GetComponentInParent<Star>();
+        if (star)
+        {
+            star.Touched();
+            _numStarsTaken++;
         }
     }
 
