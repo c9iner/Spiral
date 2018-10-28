@@ -97,8 +97,26 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        _isTouchingGround = true;
-        _remainingJumps = maxJumps;
+        foreach (var contact in col.contacts)
+        {
+            var angleToPlayer = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(contact.normal, transform.up));
+            // Ground
+            if (angleToPlayer < 30)
+            {
+                _isTouchingGround = true;
+                _remainingJumps = maxJumps;
+            }
+            // Wall
+            else if (angleToPlayer < 110)
+            {
+                _remainingJumps = 1;
+            }
+            // Ceiling
+            else
+            {
+                _remainingJumps = 0;
+            }
+        }
 
         if (col.gameObject.name == "Goal")
             Reset();
