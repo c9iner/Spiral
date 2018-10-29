@@ -26,9 +26,11 @@ public class Player : MonoBehaviour
     private float _timeSinceLastJump = 0;
     private float _jumpCoolOffTime = 0.15f;
     private float _timeSinceLastWallJump = 0;
-    private float _wallJumpMoveCoolOffTime = 1f;
+    private float _wallJumpMoveCoolOffTime = 1.5f;
     public float _wallJumpDeceleration;
     private bool _isWallJumping = false;
+    private bool _didJumpOffLeftWall = false;
+    private bool _didJumpOffRightWall = false;
     private Vector3 _gravityVector;
     private float _gravitySign = -1;
     public bool _isTouchingGround = false;
@@ -50,14 +52,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         // Gravity
-        Debug.Log("Gravity sign = " + _gravitySign);
         _gravityVector = _gravitySign * (transform.position - gravityCenter.transform.position).normalized;
         Physics.gravity = _gravityVector * gravityStrength;
         Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
 
         // Align character up axis with gravity
         float rotateSign = Vector3.Cross(-transform.up, _gravityVector).z < 0 ? -1 : 1;
-        Debug.Log("Rotate sign = " + rotateSign);
         float alignAngle = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(-transform.up, _gravityVector));
         if (alignAngle > 0.001f)
         {
@@ -91,7 +91,9 @@ public class Player : MonoBehaviour
             // Wall jump
             if (_isTouchingWall && !_isTouchingGround)
             {
-                _rigidBody.AddForce(_contactNormal * wallJump);
+                _rigidBody.AddForce(((_contactNormal*1f) - _gravityVector).normalized * wallJump);
+                _didJumpOffLeftWall = Vector3.Dot(_contactNormal, transform.right) > 0;
+                _didJumpOffRightWall = !_didJumpOffLeftWall;
                 _moveSign *= -1;
                 _timeSinceLastWallJump = 0;
                 _isWallJumping = true;
@@ -108,7 +110,8 @@ public class Player : MonoBehaviour
         {
             _moveSign = 1;
             var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
-            _rigidBody.AddForce(leftVector * acceleration * _wallJumpDeceleration);
+            var deceleration = _didJumpOffLeftWall ? _wallJumpDeceleration : 1;
+            _rigidBody.AddForce(leftVector * acceleration * deceleration);
         }
 
         // Move Right
@@ -116,10 +119,11 @@ public class Player : MonoBehaviour
         {
             _moveSign = -1;
             var rightVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
-            _rigidBody.AddForce(rightVector * acceleration * _wallJumpDeceleration);
+            var deceleration = _didJumpOffRightWall ? _wallJumpDeceleration : 1;
+            _rigidBody.AddForce(rightVector * acceleration * deceleration);
         }
 
-        // Max speed and deceleration are only applied in the direction perpendicular to gravity
+        // Max speed
         Vector3 playerForward = transform.right * -_moveSign;
         Vector3 velocityForward = playerForward * Vector3.Dot(playerForward, _rigidBody.velocity);
         if (velocityForward.sqrMagnitude > maxSpeed * maxSpeed)
@@ -128,8 +132,9 @@ public class Player : MonoBehaviour
             velocityForward *= deceleration;
 
         Vector3 playerUp = transform.up * _gravitySign;
+        bool isPlayerJumping = Vector3.Dot(playerUp, _rigidBody.velocity) * _gravitySign > 0;
         Vector3 velocityUp = playerUp * Vector3.Dot(playerUp, _rigidBody.velocity);
-        if (velocityUp.sqrMagnitude > maxJumpSpeed * maxJumpSpeed)
+        if (isPlayerJumping && velocityUp.sqrMagnitude > maxJumpSpeed * maxJumpSpeed)
             velocityUp = velocityUp.normalized * maxJumpSpeed;
 
         _rigidBody.velocity = velocityUp + velocityForward;
