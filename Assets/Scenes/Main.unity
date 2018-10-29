@@ -5940,7 +5940,9 @@ MonoBehaviour:
   acceleration: 100
   deceleration: 0.9
   maxSpeed: 10
+  maxJumpSpeed: 12
   jump: 500
+  wallJump: 500
   maxJumps: 2
   gravityCenter: {fileID: 389297000}
   gravityStrength: 20
@@ -5949,6 +5951,11 @@ MonoBehaviour:
   numEyes: 3
   rotationOffset: {x: 0, y: -90, z: 90}
   dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}
+  _remainingJumps: 0
+  _wallJumpDeceleration: 0
+  _isTouchingGround: 0
+  _isTouchingWall: 0
+  _moveSign: 1
 --- !u!136 &1709559281
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6243,7 +6250,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1759129895}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
