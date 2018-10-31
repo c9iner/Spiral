@@ -3,25 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    public float acceleration = 100;
-    public float deceleration = 0.9f;
-    public float maxSpeed = 10;
-    public float maxJumpSpeed = 20;
-    public float jump = 500;
     public float wallJump = 1000;
     public int maxJumps = 2;
-    public GameObject gravityCenter;
-    public float gravityStrength = 20;
     public float furryness = 5.5f;
     public float eyeSize = 3.2f;
     public int numEyes = 3;
-    public Vector3 rotationOffset;
     public GameObject dieFX;
 
-    private Vector3 _startPosition;
-    private Rigidbody _rigidBody;
     public int _remainingJumps;
     private float _timeSinceLastJump = 0;
     private float _jumpCoolOffTime = 0.15f;
@@ -31,8 +21,6 @@ public class Player : MonoBehaviour
     private bool _isWallJumping = false;
     private bool _didJumpOffLeftWall = false;
     private bool _didJumpOffRightWall = false;
-    private Vector3 _gravityVector;
-    private float _gravitySign = -1;
     public bool _isTouchingGround = false;
     private GameObject _groundCollisionObject;
     public bool _isTouchingWall = false;
@@ -40,41 +28,27 @@ public class Player : MonoBehaviour
     private Vector3 _contactNormal;
     private bool _isDying = false;
     private int _numStarsTaken = 0;
-    public int _moveSign = 1;
 
-    void Awake ()
+    new void Awake ()
     {
-        _startPosition = transform.position;
-        _rigidBody = GetComponent<Rigidbody>();
+        base.Awake();
+
         _remainingJumps = maxJumps;
     }
 
-    void Update()
+    override public void Reset()
     {
-        // Gravity
-        _gravityVector = _gravitySign * (transform.position - gravityCenter.transform.position).normalized;
-        Physics.gravity = _gravityVector * gravityStrength;
-        Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
+        base.Reset();
+        _isTouchingGround = true;
+        _remainingJumps = maxJumps;
+    }
 
-        // Align character up axis with gravity
-        float rotateSign = Vector3.Cross(-transform.up, _gravityVector).z < 0 ? -1 : 1;
-        float alignAngle = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(-transform.up, _gravityVector));
-        if (alignAngle > 0.001f)
-        {
-            transform.Rotate(new Vector3(0, 0, rotateSign), alignAngle);
-        }
+    new void Update()
+    {
+        base.Update();
 
-        // Quit
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
-
-        // Reset
-        if (Input.GetKeyDown(KeyCode.R) && !_isDying)
-        {
-            Reset();
-        }
+        if (transform.localScale.x < 0.5f && !_isDying)
+            StartCoroutine(Die());
 
         // Jump
         _timeSinceLastJump += Time.deltaTime;
@@ -123,21 +97,9 @@ public class Player : MonoBehaviour
             _rigidBody.AddForce(rightVector * acceleration * deceleration);
         }
 
-        // Max speed
-        Vector3 playerForward = transform.right * -_moveSign;
-        Vector3 velocityForward = playerForward * Vector3.Dot(playerForward, _rigidBody.velocity);
-        if (velocityForward.sqrMagnitude > maxSpeed * maxSpeed)
-            velocityForward = velocityForward.normalized * maxSpeed;
-        if (_isTouchingGround)
-            velocityForward *= deceleration;
+        float decel = _isTouchingGround ? deceleration : 1;
 
-        Vector3 playerUp = transform.up * _gravitySign;
-        bool isPlayerJumping = Vector3.Dot(playerUp, _rigidBody.velocity) * _gravitySign > 0;
-        Vector3 velocityUp = playerUp * Vector3.Dot(playerUp, _rigidBody.velocity);
-        if (isPlayerJumping && velocityUp.sqrMagnitude > maxJumpSpeed * maxJumpSpeed)
-            velocityUp = velocityUp.normalized * maxJumpSpeed;
-
-        _rigidBody.velocity = velocityUp + velocityForward;
+        ClampVelocity(decel);
     }
 
     void OnCollisionEnter(Collision col)
@@ -198,7 +160,12 @@ public class Player : MonoBehaviour
 
     void OnCollisionStay(Collision col)
     {
-        
+        var rogue = col.gameObject.GetComponentInParent<Rogue>();
+        if (rogue && !_isDying)
+        {
+            float shrinkSpeed = 0.99f;
+            transform.localScale *= shrinkSpeed;
+        }
     }
 
     void OnCollisionExit(Collision col)
@@ -216,18 +183,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Reset()
-    {
-        _isTouchingGround = true;
-        _rigidBody.isKinematic = false;
-        _rigidBody.velocity = Vector3.zero;
-        _gravitySign = -1;
-        _remainingJumps = maxJumps;
-        GetComponent<MeshRenderer>().enabled = true;
-        transform.position = _startPosition;
-        transform.rotation = Quaternion.identity;
-    }
-
     private IEnumerator Die()
     {
         _isDying = true;
@@ -242,6 +197,6 @@ public class Player : MonoBehaviour
 
         _isDying = false;
 
-        Reset();
+        gameManager.ResetLevel();
     }
 }
