@@ -30,11 +30,13 @@ public class Character : MonoBehaviour {
     // Update is called once per frame
     protected void Update () {
 
+        // TODO: Each Character needs its own gravity direction, we can't set this globally
         // Gravity
         if (gravityWell)
         {
             _gravityVector = _gravitySign * (transform.position - gravityWell.transform.position).normalized;
-            Physics.gravity = _gravityVector * gravityWell.gravityStrength;
+            if (gameObject.name == "Player")
+                Physics.gravity = _gravityVector * gravityWell.gravityStrength;
             //Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
 
             // Align character up axis with gravity
