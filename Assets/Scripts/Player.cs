@@ -10,9 +10,9 @@ public class Player : Character
     public float furryness = 5.5f;
     public float eyeSize = 3.2f;
     public int numEyes = 3;
-    public GameObject dieFX;
     public bool isRightCornerDetected;
     public bool isLeftCornerDetected;
+    public GameObject dieFX;
 
     public int _remainingJumps;
     private float _timeSinceLastJump = 0;
@@ -38,6 +38,14 @@ public class Player : Character
         _remainingJumps = maxJumps;
     }
 
+    new void Start()
+    {
+        base.Start();
+
+        if (_bodyAnimator)
+            _bodyAnimator.Play("PlayerNeutral", 0);
+    }
+
     override public void Reset()
     {
         base.Reset();
@@ -55,6 +63,9 @@ public class Player : Character
         isLeftCornerDetected = DetectCorner(false);
         isRightCornerDetected = DetectCorner(true);
 
+        bool isLeftPressed = Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D);
+        bool isRightPressed = Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A);
+
         // Jump
         _timeSinceLastJump += Time.deltaTime;
         _timeSinceLastWallJump += Time.deltaTime;
@@ -65,14 +76,28 @@ public class Player : Character
             bool isCornerJump = (_isTouchingWall && (isLeftCornerDetected || isRightCornerDetected));
             if (!isCornerJump)
                 _remainingJumps--;
-            
+
             // Ground/Air/Corner Jump
             if (_isTouchingGround || !_isTouchingWall || isCornerJump)
+            {
                 _rigidBody.AddForce(-_gravityVector * jump);
+                if (_isTouchingGround)
+                    _bodyAnimator.SetTrigger("Jump");
+                else if (!_isTouchingWall)
+                {
+                    var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, 1));
+                    var leftDot = Vector3.Dot(leftVector, _rigidBody.velocity);
+                    Debug.Log(leftDot);
+                    if (leftDot > 0.01f)
+                        _bodyAnimator.SetTrigger("AirJumpLeft");
+                    else if (leftDot < -0.01f)
+                        _bodyAnimator.SetTrigger("AirJumpRight");
+                }
+            }
             // Wall jump
             else if (_isTouchingWall)
             {
-                _rigidBody.AddForce(((_contactNormal*1f) - _gravityVector).normalized * wallJump);
+                _rigidBody.AddForce(((_contactNormal * 1f) - _gravityVector).normalized * wallJump);
                 _didJumpOffLeftWall = Vector3.Dot(_contactNormal, transform.right) > 0;
                 _didJumpOffRightWall = !_didJumpOffLeftWall;
                 _moveSign *= -1;
@@ -82,9 +107,6 @@ public class Player : Character
         }
 
         _wallJumpDeceleration = _timeSinceLastWallJump < _wallJumpMoveCoolOffTime ? _timeSinceLastWallJump / _wallJumpMoveCoolOffTime : 1;
-
-        bool isLeftPressed = Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D);
-        bool isRightPressed = Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A);
 
         // Move Left
         if (isLeftPressed && !_isWallJumping)
@@ -105,7 +127,6 @@ public class Player : Character
         }
 
         float decel = _isTouchingGround ? deceleration : 1;
-
         ClampVelocity(decel);
     }
 
@@ -146,6 +167,7 @@ public class Player : Character
                 {
                     _groundCollisionObject = col.gameObject;
                     _isTouchingGround = true;
+                    _bodyAnimator.SetTrigger("Land");
                 }
                 // Wall
                 else if (angleToPlayer < 110)
@@ -212,7 +234,7 @@ public class Player : Character
     {
         _isDying = true;
 
-        GetComponent<MeshRenderer>().enabled = false;
+        body.GetComponent<MeshRenderer>().enabled = false;
         _rigidBody.isKinematic = true;
 
         // Spawn fx

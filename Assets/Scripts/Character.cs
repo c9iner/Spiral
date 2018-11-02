@@ -9,10 +9,12 @@ public class Character : MonoBehaviour {
     public float maxSpeed = 10;
     public float maxJumpSpeed = 20;
     public float jump = 500;
+    public GameObject body;
 
     public GameManager gameManager { get; set; }
     public GravityWell gravityWell { get; set; }
 
+    protected Animator _bodyAnimator;
     protected Vector3 _startPosition;
     protected Rigidbody _rigidBody;
     protected Vector3 _gravityVector;
@@ -25,11 +27,15 @@ public class Character : MonoBehaviour {
         gameManager.RegisterCharacter(this);
         _startPosition = transform.position;
         _rigidBody = GetComponent<Rigidbody>();
+        _bodyAnimator = body.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    protected void Update () {
+    protected void Start()
+    {
+    }
 
+    protected void Update ()
+    {
         // TODO: Each Character needs its own gravity direction, we can't set this globally
         // Gravity
         if (gravityWell)
@@ -72,7 +78,7 @@ public class Character : MonoBehaviour {
         _rigidBody.isKinematic = false;
         _rigidBody.velocity = Vector3.zero;
         _gravitySign = -1;
-        GetComponent<MeshRenderer>().enabled = true;
+        body.GetComponent<MeshRenderer>().enabled = true;
         transform.position = _startPosition;
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one;
