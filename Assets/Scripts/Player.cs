@@ -11,6 +11,8 @@ public class Player : Character
     public float eyeSize = 3.2f;
     public int numEyes = 3;
     public GameObject dieFX;
+    public bool isRightCornerDetected;
+    public bool isLeftCornerDetected;
 
     public int _remainingJumps;
     private float _timeSinceLastJump = 0;
@@ -50,20 +52,25 @@ public class Player : Character
         if (transform.localScale.x < 0.5f && !_isDying)
             StartCoroutine(Die());
 
+        isLeftCornerDetected = DetectCorner(false);
+        isRightCornerDetected = DetectCorner(true);
+
         // Jump
         _timeSinceLastJump += Time.deltaTime;
         _timeSinceLastWallJump += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.W) && _remainingJumps > 0 && _timeSinceLastJump > _jumpCoolOffTime)
         {
-            _remainingJumps--;
             _timeSinceLastJump = 0;
 
-            // Ground/Air Jump
-            if (_isTouchingGround || !_isTouchingWall)
+            bool isCornerJump = (_isTouchingWall && (isLeftCornerDetected || isRightCornerDetected));
+            if (!isCornerJump)
+                _remainingJumps--;
+            
+            // Ground/Air/Corner Jump
+            if (_isTouchingGround || !_isTouchingWall || isCornerJump)
                 _rigidBody.AddForce(-_gravityVector * jump);
-
             // Wall jump
-            if (_isTouchingWall && !_isTouchingGround)
+            else if (_isTouchingWall)
             {
                 _rigidBody.AddForce(((_contactNormal*1f) - _gravityVector).normalized * wallJump);
                 _didJumpOffLeftWall = Vector3.Dot(_contactNormal, transform.right) > 0;
@@ -100,6 +107,24 @@ public class Player : Character
         float decel = _isTouchingGround ? deceleration : 1;
 
         ClampVelocity(decel);
+    }
+
+    bool DetectCorner(bool right = false)
+    {
+        RaycastHit hit;
+        float flipDirection = right == true ? 1 : -1;
+        var cornerDetectorDistance = 4.0f;
+        var cornerDetectorPosition = transform.TransformPoint(new Vector3(flipDirection * 1, 2, 0));
+        var cornerDetectorAngle = transform.TransformDirection(new Vector3(flipDirection * -0.1f, -1, 0).normalized);
+
+        if (Physics.Raycast(cornerDetectorPosition, cornerDetectorAngle, out hit, cornerDetectorDistance))
+        { 
+            Debug.DrawRay(cornerDetectorPosition, cornerDetectorAngle * cornerDetectorDistance, Color.yellow);
+            return true;
+        }
+
+        Debug.DrawRay(cornerDetectorPosition, cornerDetectorAngle * cornerDetectorDistance, Color.white);
+        return false;
     }
 
     void OnCollisionEnter(Collision col)
