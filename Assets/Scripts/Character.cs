@@ -41,9 +41,9 @@ public class Character : MonoBehaviour {
         if (gravityWell)
         {
             _gravityVector = _gravitySign * (transform.position - gravityWell.transform.position).normalized;
-            if (gameObject.name == "Player")
-                Physics.gravity = _gravityVector * gravityWell.gravityStrength;
             //Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
+
+            _rigidBody.AddForce(_gravityVector * gravityWell.gravityStrength);
 
             // Align character up axis with gravity
             float rotateSign = Vector3.Cross(-transform.up, _gravityVector).z < 0 ? -1 : 1;

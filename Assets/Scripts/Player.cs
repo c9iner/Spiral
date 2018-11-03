@@ -82,7 +82,9 @@ public class Player : Character
             {
                 _rigidBody.AddForce(-_gravityVector * jump);
                 if (_isTouchingGround)
+                {
                     _bodyAnimator.SetTrigger("Jump");
+                }
                 else if (!_isTouchingWall)
                 {
                     var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, 1));
@@ -174,6 +176,7 @@ public class Player : Character
                 {
                     _wallCollisioObject = col.gameObject;
                     _isTouchingWall = true;
+                    _bodyAnimator.SetTrigger("Neutral");
                 }
             }
 
