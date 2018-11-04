@@ -5,9 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
     private static GameManager _instance = null;
-    private List<Character> _characters = new List<Character>();
+    private GravityWell[] _gravityWells;
+    private PhysicsBody[] _physicsBodies;
+    private Button[] _buttons;
 
-	void Awake () {
+    void Awake () {
         if (_instance == null)
         {
             _instance = this;
@@ -15,6 +17,10 @@ public class GameManager : MonoBehaviour {
         }
         else if (_instance != this)
             Destroy(gameObject);
+
+        _physicsBodies = (PhysicsBody[])FindObjectsOfType(typeof(PhysicsBody));
+        _gravityWells = (GravityWell[])FindObjectsOfType(typeof(GravityWell));
+        _buttons = (Button[])FindObjectsOfType(typeof(Button));
     }
 	
 	void Update () {
@@ -26,22 +32,19 @@ public class GameManager : MonoBehaviour {
         }
 
         // Reset
-        /*
         if (Input.GetKeyDown(KeyCode.R))
         {
-            
+            //ResetLevel();
         }
-        */
     }
-
-    public void RegisterCharacter(Character character)
-    {
-        _characters.Add(character);
-    }
-
+    
     public void ResetLevel()
     {
-        foreach (var character in _characters)
-            character.Reset();
+        foreach (var body in _physicsBodies)
+            body.Reset();
+        foreach (var gravityWell in _gravityWells)
+            gravityWell.Reset();
+        foreach (var button in _buttons)
+            button.Reset();
     }
 }

@@ -14,6 +14,8 @@ public class Player : Character
     public bool isLeftCornerDetected;
     public GameObject dieFX;
 
+    public GameManager gameManager { get; set; }
+
     public int _remainingJumps;
     private float _timeSinceLastJump = 0;
     private float _jumpCoolOffTime = 0.15f;
@@ -31,29 +33,21 @@ public class Player : Character
     private bool _isDying = false;
     private int _numStarsTaken = 0;
 
-    new void Awake ()
+    public override void Awake ()
     {
         base.Awake();
 
         _remainingJumps = maxJumps;
     }
 
-    new void Start()
+    public override void Start()
     {
         base.Start();
 
-        if (_bodyAnimator)
-            _bodyAnimator.Play("PlayerNeutral", 0);
+        gameManager = FindObjectOfType<GameManager>();
     }
 
-    override public void Reset()
-    {
-        base.Reset();
-        _isTouchingGround = true;
-        _remainingJumps = maxJumps;
-    }
-
-    new void Update()
+    public override void Update()
     {
         base.Update();
 
@@ -89,7 +83,6 @@ public class Player : Character
                 {
                     var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, 1));
                     var leftDot = Vector3.Dot(leftVector, _rigidBody.velocity);
-                    Debug.Log(leftDot);
                     if (leftDot > 0.01f)
                         _bodyAnimator.SetTrigger("AirJumpLeft");
                     else if (leftDot < -0.01f)
@@ -132,6 +125,13 @@ public class Player : Character
         ClampVelocity(decel);
     }
 
+    public override void Reset()
+    {
+        base.Reset();
+        _isTouchingGround = true;
+        _remainingJumps = maxJumps;
+    }
+
     bool DetectCorner(bool right = false)
     {
         RaycastHit hit;
@@ -157,6 +157,7 @@ public class Player : Character
         {
             StartCoroutine(Die());
         }
+        // Detect Walls and Ground
         else
         {
             foreach (var contact in col.contacts)
@@ -165,14 +166,14 @@ public class Player : Character
                 _contactNormal = contact.normal;
 
                 // Ground
-                if (angleToPlayer < 30)
+                if (angleToPlayer < 45)
                 {
                     _groundCollisionObject = col.gameObject;
                     _isTouchingGround = true;
                     _bodyAnimator.SetTrigger("Land");
                 }
                 // Wall
-                else if (angleToPlayer < 110)
+                else if (angleToPlayer < 135)
                 {
                     _wallCollisioObject = col.gameObject;
                     _isTouchingWall = true;
@@ -182,7 +183,7 @@ public class Player : Character
 
             if (_isTouchingGround)
                 _remainingJumps = maxJumps;
-            else if(_isTouchingWall)
+            else if (_isTouchingWall)
                 _remainingJumps = 1;
         }
     }
@@ -195,11 +196,11 @@ public class Player : Character
             Reset();
         }
         // Gravity Flip
-        else if (col.gameObject.name == "GravityFlip")
+        else if (gravityWell && col.gameObject == gravityWell.gravityFlip)
         {
-            _gravitySign *= -1;
+            gravityWell.gravityStrength *= -1;
         }
-
+        // Star
         var star = col.gameObject.GetComponentInParent<Star>();
         if (star)
         {
@@ -210,11 +211,18 @@ public class Player : Character
 
     void OnCollisionStay(Collision col)
     {
-        var rogue = col.gameObject.GetComponentInParent<Rogue>();
-        if (rogue && !_isDying)
+        // Rogue
+        if (col.gameObject.GetComponentInParent<Rogue>() && !_isDying)
         {
             float shrinkSpeed = 0.99f;
             transform.localScale *= shrinkSpeed;
+        }
+        // Falling Block
+        else if (col.gameObject.GetComponentInParent<FallingBlock>())
+        {
+            // TODO: Test that block is actually above us
+            if (_isTouchingGround)
+                StartCoroutine(Die());
         }
     }
 
@@ -235,6 +243,9 @@ public class Player : Character
 
     private IEnumerator Die()
     {
+        if (_isDying)
+            yield break;
+
         _isDying = true;
 
         body.GetComponent<MeshRenderer>().enabled = false;
