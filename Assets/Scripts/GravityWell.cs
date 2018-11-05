@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class GravityWell : MonoBehaviour {
 
-    public float gravityStrength = -20;
+    public float gravityStrength = 20;
     public GameObject gravityFlip;
+    public float gravityDirection = 1; // 1 or -1
 
-    private float _gravityStrengthStart;
+    private float _gravityDirectionStart;
 
     private void Start()
     {
-        _gravityStrengthStart = gravityStrength;
+        _gravityDirectionStart = gravityDirection;
     }
 
     void OnTriggerStay(Collider col)
@@ -25,6 +26,6 @@ public class GravityWell : MonoBehaviour {
 
     public void Reset()
     {
-        gravityStrength = _gravityStrengthStart;
+        gravityDirection = _gravityDirectionStart;
     }
 }

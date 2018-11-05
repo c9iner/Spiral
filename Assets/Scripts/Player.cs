@@ -198,7 +198,7 @@ public class Player : Character
         // Gravity Flip
         else if (gravityWell && col.gameObject == gravityWell.gravityFlip)
         {
-            gravityWell.gravityStrength *= -1;
+            gravityWell.gravityDirection *= -1;
         }
         // Star
         var star = col.gameObject.GetComponentInParent<Star>();

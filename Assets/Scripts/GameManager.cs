@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     private GravityWell[] _gravityWells;
     private PhysicsBody[] _physicsBodies;
     private Button[] _buttons;
+    private Star[] _stars;
 
     void Awake () {
         if (_instance == null)
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
         _physicsBodies = (PhysicsBody[])FindObjectsOfType(typeof(PhysicsBody));
         _gravityWells = (GravityWell[])FindObjectsOfType(typeof(GravityWell));
         _buttons = (Button[])FindObjectsOfType(typeof(Button));
+        _stars = (Star[])FindObjectsOfType(typeof(Star));
     }
 	
 	void Update () {
@@ -46,5 +48,7 @@ public class GameManager : MonoBehaviour {
             gravityWell.Reset();
         foreach (var button in _buttons)
             button.Reset();
+        foreach (var star in _stars)
+            star.Reset();
     }
 }

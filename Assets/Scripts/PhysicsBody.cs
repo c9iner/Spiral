@@ -29,10 +29,10 @@ public class PhysicsBody : MonoBehaviour {
         // Gravity
         if (gravityWell)
         {
-            _gravityVector = (gravityWell.transform.position - transform.position).normalized;
+            _gravityVector = (gravityWell.transform.position - transform.position).normalized * gravityWell.gravityDirection;
             //Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
 
-            _rigidBody.AddForce(-_gravityVector * gravityWell.gravityStrength * _rigidBody.mass);
+            _rigidBody.AddForce(_gravityVector * _rigidBody.mass * gravityWell.gravityStrength);
         }
     }
 
