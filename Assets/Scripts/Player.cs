@@ -74,7 +74,7 @@ public class Player : Character
             // Ground/Air/Corner Jump
             if (_isTouchingGround || !_isTouchingWall || isCornerJump)
             {
-                _rigidBody.AddForce(-_gravityVector * jump);
+                _rigidBody.AddForce(-_gravityVector * jump, ForceMode.Acceleration);
                 if (_isTouchingGround)
                 {
                     _bodyAnimator.SetTrigger("Jump");
@@ -92,7 +92,7 @@ public class Player : Character
             // Wall jump
             else if (_isTouchingWall)
             {
-                _rigidBody.AddForce(((_contactNormal * 1f) - _gravityVector).normalized * wallJump);
+                _rigidBody.AddForce(((_contactNormal * 1f) - _gravityVector).normalized * wallJump, ForceMode.Acceleration);
                 _didJumpOffLeftWall = Vector3.Dot(_contactNormal, transform.right) > 0;
                 _didJumpOffRightWall = !_didJumpOffLeftWall;
                 _moveSign *= -1;
@@ -109,7 +109,7 @@ public class Player : Character
             _moveSign = 1;
             var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffLeftWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(leftVector * acceleration * deceleration);
+            _rigidBody.AddForce(leftVector * acceleration * deceleration, ForceMode.Acceleration);
         }
 
         // Move Right
@@ -118,7 +118,7 @@ public class Player : Character
             _moveSign = -1;
             var rightVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffRightWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(rightVector * acceleration * deceleration);
+            _rigidBody.AddForce(rightVector * acceleration * deceleration, ForceMode.Acceleration);
         }
 
         float decel = _isTouchingGround ? deceleration : 1;
@@ -218,10 +218,11 @@ public class Player : Character
             transform.localScale *= shrinkSpeed;
         }
         // Falling Block
-        else if (col.gameObject.GetComponentInParent<FallingBlock>())
+        var fallingBlock = col.gameObject.GetComponentInParent<FallingBlock>();
+        if (fallingBlock)
         {
-            // TODO: Test that block is actually above us
-            if (_isTouchingGround)
+            bool isTouchingBottomSurface = Vector3.Dot(col.contacts[0].normal, transform.up) < -0.8f;
+            if (_isTouchingGround && isTouchingBottomSurface && fallingBlock.animState == FallingBlock.AnimationState.Falling)
                 StartCoroutine(Die());
         }
     }
