@@ -13,40 +13,38 @@ public class FallingBlock : PhysicsBody
     private bool _isFirstFall = true;
     private bool _isActive = true;
 
-    public enum FallingBlockState
+    public enum AnimationState
     {
         Floating,
         Falling,
         Resting,
         Rising
     }
-    public FallingBlockState currentState = FallingBlockState.Falling;
+    public AnimationState animState = AnimationState.Falling;
 
     public override void Start () {
 		
 	}
 	
-	public override void Update () {
+	public void Update () {
 
         if (!_isActive)
             return;
 
-        base.Update();
-
-        switch(currentState)
+        switch(animState)
         {
-            case FallingBlockState.Floating:
+            case AnimationState.Floating:
                 {
                     _elapsedFloatingTime += Time.deltaTime;
                     if (_elapsedFloatingTime > floatingDuration)
                     {
                         _elapsedFloatingTime = 0;
                         _rigidBody.isKinematic = false;
-                        currentState = FallingBlockState.Falling;
+                        animState = AnimationState.Falling;
                     }
                     break;
                 }
-            case FallingBlockState.Resting:
+            case AnimationState.Resting:
                 {
                     _elapsedRestingTime += Time.deltaTime;
                     if (_elapsedRestingTime > restingDuration)
@@ -57,16 +55,16 @@ public class FallingBlock : PhysicsBody
                         _isFirstFall = false;
 
                         _elapsedRestingTime = 0;
-                        currentState = FallingBlockState.Rising;
+                        animState = AnimationState.Rising;
                     }
                     break;
                 }
-            case FallingBlockState.Rising:
+            case AnimationState.Rising:
                 {
                     transform.Translate(new Vector3(0, -risingSpeed * Time.deltaTime, 0));
                     if (transform.localPosition.y <= _startPosition.y)
                     {
-                        currentState = FallingBlockState.Floating;
+                        animState = AnimationState.Floating;
                     }
                     break;
                 }
@@ -76,7 +74,7 @@ public class FallingBlock : PhysicsBody
     public override void Reset()
     {
         base.Reset();
-        currentState = FallingBlockState.Falling;
+        animState = AnimationState.Falling;
         _elapsedFloatingTime = 0;
         _elapsedRestingTime = 0;
         _isFirstFall = true;
@@ -95,12 +93,12 @@ public class FallingBlock : PhysicsBody
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (currentState == FallingBlockState.Falling)
+        if (animState == AnimationState.Falling)
         {
             if (!collision.gameObject.GetComponent<Player>())
             {
                 _rigidBody.isKinematic = true;
-                currentState = FallingBlockState.Resting;
+                animState = AnimationState.Resting;
             }
         }
     }

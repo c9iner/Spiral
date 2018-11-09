@@ -24,15 +24,20 @@ public class PhysicsBody : MonoBehaviour {
     {
     }
 
-    virtual public void Update()
+    virtual public void FixedUpdate()
     {
         // Gravity
         if (gravityWell)
         {
-            _gravityVector = (gravityWell.transform.position - transform.position).normalized * gravityWell.gravityDirection;
+            Vector3 offsetToGravityWell = gravityWell.transform.position - transform.position;
+            
+            _gravityVector = offsetToGravityWell.normalized * gravityWell.gravityDirection;
             //Debug.DrawRay(gravityCenter.transform.position, Physics.gravity * 10, Color.blue);
 
-            _rigidBody.AddForce(_gravityVector * _rigidBody.mass * gravityWell.gravityStrength);
+            //float gravityDistanceMultiplier = 1.0f / offsetToGravityWell.magnitude;
+            //var gravityStrength = gravityWell.gravityStrength * gravityDistanceMultiplier;
+
+            _rigidBody.AddForce(_gravityVector * gravityWell.gravityStrength, ForceMode.Acceleration);
         }
     }
 

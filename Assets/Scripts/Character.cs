@@ -24,10 +24,13 @@ public class Character : PhysicsBody {
     {
     }
 
-    public override void Update()
+    public override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
+    }
 
+    public virtual void Update()
+    {
         // Gravity
         if (gravityWell)
         {

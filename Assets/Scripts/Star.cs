@@ -45,10 +45,11 @@ public class Star : MonoBehaviour {
     {
         _isInHUD = false;
         starMesh.transform.localPosition = Vector3.zero;
-        _parentConstraint.weight = 0;
         transform.localScale = _startScale;
         if (_HUDStarTransform)
             _HUDStarTransform.gameObject.GetComponentInChildren<MeshRenderer>().enabled = true;
+        if (_parentConstraint)
+            _parentConstraint.weight = 0;
     }
 
     private IEnumerator MoveToHUD()
