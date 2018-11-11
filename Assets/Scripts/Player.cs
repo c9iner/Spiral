@@ -13,6 +13,8 @@ public class Player : Character
     public bool isRightCornerDetected;
     public bool isLeftCornerDetected;
     public GameObject dieFX;
+    public SimpleTouchController leftController;
+    public SimpleTouchController rightController;
 
     public GameManager gameManager { get; set; }
 
@@ -32,6 +34,7 @@ public class Player : Character
     private Vector3 _contactNormal;
     private bool _isDying = false;
     private int _numStarsTaken = 0;
+    private bool _jumpNextFrame = false;
 
     public override void Awake ()
     {
@@ -45,6 +48,12 @@ public class Player : Character
         base.Start();
 
         gameManager = FindObjectOfType<GameManager>();
+        rightController.onTouchDownAction = OnTouchDown;
+
+#if UNITY_STANDALONE
+        leftController.gameObject.SetActive(false);
+        rightController.gameObject.SetActive(false);
+#endif
     }
 
     public override void Update()
@@ -57,13 +66,24 @@ public class Player : Character
         isLeftCornerDetected = DetectCorner(false);
         isRightCornerDetected = DetectCorner(true);
 
+#if UNITY_STANDALONE
         bool isLeftPressed = Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D);
         bool isRightPressed = Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A);
+        float directionStrength = 1;
+#else
+        bool isLeftPressed = leftController.GetTouchPosition.x < 0;
+        bool isRightPressed = leftController.GetTouchPosition.x > 0;
+        float directionStrength = Mathf.Abs(leftController.GetTouchPosition.x);
+#endif
 
         // Jump
+        bool jumpKeyPressed = Input.GetKeyDown(KeyCode.W) || _jumpNextFrame;
+        if (_jumpNextFrame)
+            _jumpNextFrame = false;
+
         _timeSinceLastJump += Time.deltaTime;
         _timeSinceLastWallJump += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.W) && _remainingJumps > 0 && _timeSinceLastJump > _jumpCoolOffTime)
+        if (jumpKeyPressed && _remainingJumps > 0 && _timeSinceLastJump > _jumpCoolOffTime)
         {
             _timeSinceLastJump = 0;
 
@@ -109,7 +129,7 @@ public class Player : Character
             _moveSign = 1;
             var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffLeftWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(leftVector * acceleration * deceleration, ForceMode.Acceleration);
+            _rigidBody.AddForce(leftVector * acceleration * deceleration * directionStrength, ForceMode.Acceleration);
         }
 
         // Move Right
@@ -118,10 +138,10 @@ public class Player : Character
             _moveSign = -1;
             var rightVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffRightWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(rightVector * acceleration * deceleration, ForceMode.Acceleration);
+            _rigidBody.AddForce(rightVector * acceleration * deceleration * directionStrength, ForceMode.Acceleration);
         }
 
-        float decel = _isTouchingGround ? deceleration : 1;
+        float decel = deceleration;// _isTouchingGround ? deceleration : 1;
         ClampVelocity(decel);
     }
 
@@ -130,6 +150,11 @@ public class Player : Character
         base.Reset();
         _isTouchingGround = true;
         _remainingJumps = maxJumps;
+    }
+
+    void OnTouchDown()
+    {
+        _jumpNextFrame = true;
     }
 
     bool DetectCorner(bool right = false)
@@ -152,7 +177,7 @@ public class Player : Character
 
     void OnCollisionEnter(Collision col)
     {
-        // Enemy
+        // EnemyQuard
         if (col.gameObject.GetComponentInParent<EnemyGuard>())
         {
             StartCoroutine(Die());
@@ -193,7 +218,7 @@ public class Player : Character
         // Goal
         if (col.gameObject.name == "Goal")
         {
-            Reset();
+            gameManager.ResetLevel();
         }
         // Gravity Flip
         else if (gravityWell && col.gameObject == gravityWell.gravityFlip)

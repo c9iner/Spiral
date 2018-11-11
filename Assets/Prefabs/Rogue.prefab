@@ -290,10 +290,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 10
   deceleration: 0.9
-  maxSpeed: 8
+  maxSpeed: 6
   maxJumpSpeed: 20
   jump: 500
   body: {fileID: 1776528354140420}
+  dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}
 --- !u!135 &135577402853227260
 SphereCollider:
   m_ObjectHideFlags: 1
