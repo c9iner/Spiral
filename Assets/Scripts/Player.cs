@@ -60,6 +60,8 @@ public class Player : Character
     {
         base.Update();
 
+        Physics.gravity = _gravityVector;
+
         if (transform.localScale.x < 0.5f && !_isDying)
             StartCoroutine(Die());
 

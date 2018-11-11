@@ -63,7 +63,11 @@ public class Character : PhysicsBody {
         if (isPlayerJumping && velocityUp.sqrMagnitude > maxJumpSpeed * maxJumpSpeed)
             velocityUp = velocityUp.normalized * maxJumpSpeed;
 
-        _rigidBody.velocity = velocityUp + velocityForward;
+        var finalVelocity = velocityUp + velocityForward;
+        //if (finalVelocity.x < 0.01f && finalVelocity.y < 0.01f && finalVelocity.z < 0.01f)
+        //    finalVelocity = Vector3.zero;
+
+        _rigidBody.velocity = finalVelocity;
     }
 
 }
