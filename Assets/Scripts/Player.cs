@@ -60,6 +60,8 @@ public class Player : Character
     {
         base.Update();
 
+        Physics.gravity = _gravityVector;
+
         if (transform.localScale.x < 0.5f && !_isDying)
             StartCoroutine(Die());
 
@@ -161,14 +163,17 @@ public class Player : Character
     {
         RaycastHit hit;
         float flipDirection = right == true ? 1 : -1;
-        var cornerDetectorDistance = 4.0f;
+        var cornerDetectorDistance = 3.0f;
         var cornerDetectorPosition = transform.TransformPoint(new Vector3(flipDirection * 1, 2, 0));
         var cornerDetectorAngle = transform.TransformDirection(new Vector3(flipDirection * -0.1f, -1, 0).normalized);
 
         if (Physics.Raycast(cornerDetectorPosition, cornerDetectorAngle, out hit, cornerDetectorDistance))
-        { 
-            Debug.DrawRay(cornerDetectorPosition, cornerDetectorAngle * cornerDetectorDistance, Color.yellow);
-            return true;
+        {
+            if (hit.collider.gameObject.layer != 9) // Ignore Limbs layer
+            {
+                Debug.DrawRay(cornerDetectorPosition, cornerDetectorAngle * cornerDetectorDistance, Color.yellow);
+                return true;
+            }
         }
 
         Debug.DrawRay(cornerDetectorPosition, cornerDetectorAngle * cornerDetectorDistance, Color.white);
