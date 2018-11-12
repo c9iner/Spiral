@@ -10,14 +10,18 @@ public class Character : PhysicsBody {
     public float maxJumpSpeed = 20;
     public float jump = 500;
     public GameObject body;
+    public GameObject dieFX;
 
     protected Animator _bodyAnimator;
     protected int _moveSign = 1;
+    protected CapsuleCollider _collider;
+    protected bool _isDying = false;
 
     // Use this for initialization
     public override void Awake () {
         base.Awake();
         _bodyAnimator = body.GetComponent<Animator>();
+        _collider = body.GetComponentInChildren<CapsuleCollider>();
     }
 
     public override void Start()
@@ -27,6 +31,7 @@ public class Character : PhysicsBody {
     public override void FixedUpdate()
     {
         base.FixedUpdate();
+        ClampVelocity(deceleration);
     }
 
     public virtual void Update()
@@ -45,16 +50,22 @@ public class Character : PhysicsBody {
     {
         base.Reset();
         body.GetComponent<MeshRenderer>().enabled = true;
+        _collider.enabled = true;
     }
 
     protected void ClampVelocity(float horizontalDeceleration = 1)
     {
+        if (!gravityWell)
+            return;
+
         // Max speed
         Vector3 playerForward = transform.right * -_moveSign;
         Vector3 velocityForward = playerForward * Vector3.Dot(playerForward, _rigidBody.velocity);
         if (velocityForward.sqrMagnitude > maxSpeed * maxSpeed)
             velocityForward = velocityForward.normalized * maxSpeed;
-        velocityForward *= horizontalDeceleration;
+
+        float deceleration = horizontalDeceleration * Time.deltaTime;
+        velocityForward *= 1 - deceleration;    
 
         float gravitySign = gravityWell.gravityStrength > 0 ? 1 : -1;
         Vector3 playerUp = transform.up * gravitySign;
@@ -64,6 +75,25 @@ public class Character : PhysicsBody {
             velocityUp = velocityUp.normalized * maxJumpSpeed;
 
         _rigidBody.velocity = velocityUp + velocityForward;
+    }
+
+    protected virtual IEnumerator Die()
+    {
+        if (_isDying)
+            yield break;
+
+        _isDying = true;
+
+        body.GetComponent<MeshRenderer>().enabled = false;
+        _rigidBody.isKinematic = true;
+        _collider.enabled = false;
+
+        // Spawn fx
+        var fx = Instantiate(dieFX, transform);
+        yield return new WaitForSecondsRealtime(5);
+        Destroy(fx);
+
+        _isDying = false;
     }
 
 }

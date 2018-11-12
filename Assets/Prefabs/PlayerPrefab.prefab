@@ -1574,12 +1574,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96cc02085b6c245468a4fe6380261b4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 100
-  deceleration: 0.9
+  acceleration: 6000
+  deceleration: 5
   maxSpeed: 10
   maxJumpSpeed: 12
   jump: 500
   body: {fileID: 1126361115400444}
+  dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}
   wallJump: 500
   maxJumps: 2
   furryness: 5.5
@@ -1587,7 +1588,6 @@ MonoBehaviour:
   numEyes: 3
   isRightCornerDetected: 0
   isLeftCornerDetected: 0
-  dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}
   leftController: {fileID: 0}
   rightController: {fileID: 0}
   _remainingJumps: 0

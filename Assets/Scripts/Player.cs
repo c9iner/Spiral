@@ -12,7 +12,6 @@ public class Player : Character
     public int numEyes = 3;
     public bool isRightCornerDetected;
     public bool isLeftCornerDetected;
-    public GameObject dieFX;
     public SimpleTouchController leftController;
     public SimpleTouchController rightController;
 
@@ -32,7 +31,6 @@ public class Player : Character
     public bool _isTouchingWall = false;
     private GameObject _wallCollisioObject;
     private Vector3 _contactNormal;
-    private bool _isDying = false;
     private int _numStarsTaken = 0;
     private bool _jumpNextFrame = false;
 
@@ -131,7 +129,7 @@ public class Player : Character
             _moveSign = 1;
             var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffLeftWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(leftVector * acceleration * deceleration * directionStrength, ForceMode.Acceleration);
+            _rigidBody.AddForce(leftVector * acceleration * deceleration * directionStrength * Time.deltaTime, ForceMode.Acceleration);
         }
 
         // Move Right
@@ -140,11 +138,9 @@ public class Player : Character
             _moveSign = -1;
             var rightVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, _moveSign));
             var deceleration = _didJumpOffRightWall ? _wallJumpDeceleration : 1;
-            _rigidBody.AddForce(rightVector * acceleration * deceleration * directionStrength, ForceMode.Acceleration);
+            _rigidBody.AddForce(rightVector * acceleration * deceleration * directionStrength * Time.deltaTime, ForceMode.Acceleration);
         }
 
-        float decel = deceleration;// _isTouchingGround ? deceleration : 1;
-        ClampVelocity(decel);
     }
 
     public override void Reset()
@@ -272,22 +268,9 @@ public class Player : Character
         }
     }
 
-    private IEnumerator Die()
+    protected override IEnumerator Die()
     {
-        if (_isDying)
-            yield break;
-
-        _isDying = true;
-
-        body.GetComponent<MeshRenderer>().enabled = false;
-        _rigidBody.isKinematic = true;
-
-        // Spawn fx
-        var fx = Instantiate(dieFX, transform);
-        yield return new WaitForSecondsRealtime(5);
-        Destroy(fx);
-
-        _isDying = false;
+        yield return base.Die();
 
         gameManager.ResetLevel();
     }

@@ -288,10 +288,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad0745f106df4f4ea5f28e2bbd6210e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 10
-  deceleration: 0.9
-  maxSpeed: 6
-  maxJumpSpeed: 20
+  acceleration: 250
+  deceleration: 5
+  maxSpeed: 2
+  maxJumpSpeed: 6
   jump: 500
   body: {fileID: 1776528354140420}
   dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}

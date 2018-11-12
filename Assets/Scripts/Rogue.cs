@@ -3,21 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Rogue : Character {
-
-    public GameObject dieFX;
-
-    bool _isDying = false;
-
-    // Use this for initialization
+      
     new void Awake () {
         base.Awake();
     }
-	
-	// Update is called once per frame
+
 	new void Update () {
         base.Update();
-
-        ClampVelocity(deceleration);
     }
 
     void OnTriggerStay(Collider col)
@@ -25,7 +17,7 @@ public class Rogue : Character {
         if (col.gameObject.GetComponentInParent<Player>())
         {
             Vector3 directionToPlayer = col.transform.position - transform.position;
-            _rigidBody.AddForce(directionToPlayer * acceleration);
+            _rigidBody.AddForce(directionToPlayer * acceleration * Time.deltaTime);
         }
     }
 
@@ -38,21 +30,4 @@ public class Rogue : Character {
         }
     }
 
-    private IEnumerator Die()
-    {
-        if (_isDying)
-            yield break;
-
-        _isDying = true;
-
-        body.GetComponent<MeshRenderer>().enabled = false;
-        _rigidBody.isKinematic = true;
-
-        // Spawn fx
-        var fx = Instantiate(dieFX, transform);
-        yield return new WaitForSecondsRealtime(5);
-        Destroy(fx);
-
-        _isDying = false;
-    }
 }
