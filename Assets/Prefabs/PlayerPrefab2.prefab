@@ -121,6 +121,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4381379731781370}
   - component: {fileID: 54513646846411732}
+  - component: {fileID: 114427874384575622}
   - component: {fileID: 153211360868630124}
   m_Layer: 9
   m_Name: L_Antenna4
@@ -156,6 +157,7 @@ GameObject:
   - component: {fileID: 4022183920665780}
   - component: {fileID: 54976209749336582}
   - component: {fileID: 153964164844440248}
+  - component: {fileID: 114880671498987106}
   m_Layer: 9
   m_Name: R_Antenna2
   m_TagString: Untagged
@@ -326,6 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4757516986269538}
   - component: {fileID: 54630510027751028}
+  - component: {fileID: 114051555287158606}
   - component: {fileID: 153466821262554174}
   m_Layer: 9
   m_Name: R_Antenna4
@@ -343,6 +346,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4633187286876682}
   - component: {fileID: 54767286921575342}
+  - component: {fileID: 114509217516843204}
   - component: {fileID: 153553616427336948}
   m_Layer: 9
   m_Name: L_Antenna3
@@ -360,6 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4631501816454524}
   - component: {fileID: 54441880882285174}
+  - component: {fileID: 114199241797741298}
   - component: {fileID: 153344618597115558}
   m_Layer: 9
   m_Name: L_Antenna2
@@ -377,6 +382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4058626060617698}
   - component: {fileID: 54738644894247538}
+  - component: {fileID: 114954179939107970}
   - component: {fileID: 153478041990779098}
   m_Layer: 9
   m_Name: R_Antenna3
@@ -1757,6 +1763,30 @@ MonoBehaviour:
   floatDistance: 0
   floatDistanceHUD: 0.1
   starMesh: {fileID: 1229074818658778}
+--- !u!114 &114051555287158606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1676733342587174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
+--- !u!114 &114199241797741298
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721312642800642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
 --- !u!114 &114217029827133970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1773,6 +1803,30 @@ MonoBehaviour:
   floatDistance: 0
   floatDistanceHUD: 0.1
   starMesh: {fileID: 1653947846687864}
+--- !u!114 &114427874384575622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1322373620240496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
+--- !u!114 &114509217516843204
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1682395701117918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
 --- !u!114 &114707901594520564
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1846,6 +1900,18 @@ MonoBehaviour:
   floatDistance: 0
   floatDistanceHUD: 0.1
   starMesh: {fileID: 1990641723050496}
+--- !u!114 &114880671498987106
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1354917352737716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
 --- !u!114 &114916251545923830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1855,6 +1921,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9f25c0ce3e90324a9d1e9960baca960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 4509249448926932}
+--- !u!114 &114954179939107970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1742950572860690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47c9e34038a2fa8408ef074d3214e0e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 4509249448926932}
@@ -1922,8 +2000,8 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 200
+    damper: 30
   m_AngularYLimit:
     limit: 0
     bounciness: 0
@@ -1959,9 +2037,9 @@ ConfigurableJoint:
     maximumForce: 3.4028233e+38
   m_AngularYZDrive:
     serializedVersion: 3
-    positionSpring: 1
+    positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+29
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2016,14 +2094,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2055,7 +2133,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2069,7 +2147,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!153 &153344618597115558
@@ -2110,14 +2188,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2149,7 +2227,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2163,7 +2241,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!153 &153466821262554174
@@ -2204,14 +2282,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2243,7 +2321,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2257,7 +2335,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!153 &153478041990779098
@@ -2298,14 +2376,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2337,7 +2415,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2351,7 +2429,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!153 &153553616427336948
@@ -2392,14 +2470,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2431,7 +2509,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2445,7 +2523,7 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
 --- !u!153 &153705381737832612
@@ -2486,8 +2564,8 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 0
-    damper: 0
+    spring: 200
+    damper: 30
   m_AngularYLimit:
     limit: 0
     bounciness: 0
@@ -2523,9 +2601,9 @@ ConfigurableJoint:
     maximumForce: 3.4028233e+38
   m_AngularYZDrive:
     serializedVersion: 3
-    positionSpring: 1
+    positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+29
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2580,14 +2658,14 @@ ConfigurableJoint:
     bounciness: 0
     contactDistance: 0
   m_AngularYZLimitSpring:
-    spring: 200
-    damper: 30
+    spring: 500
+    damper: 1
   m_AngularYLimit:
     limit: 0
     bounciness: 0
     contactDistance: 0
   m_AngularZLimit:
-    limit: 15
+    limit: 5
     bounciness: 0
     contactDistance: 0
   m_TargetPosition: {x: 0, y: 0, z: 0}
@@ -2619,7 +2697,7 @@ ConfigurableJoint:
     serializedVersion: 3
     positionSpring: 0
     positionDamper: 0
-    maximumForce: 1e+18
+    maximumForce: 3.4028233e+38
   m_SlerpDrive:
     serializedVersion: 3
     positionSpring: 0
@@ -2633,6 +2711,6 @@ ConfigurableJoint:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_EnableCollision: 0
-  m_EnablePreprocessing: 1
+  m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
