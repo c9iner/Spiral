@@ -9,6 +9,7 @@ public class Character : PhysicsBody {
     public float maxSpeed = 10;
     public float maxJumpSpeed = 20;
     public float jump = 500;
+    public float health = 100;
     public GameObject body;
     public GameObject dieFX;
 
@@ -16,12 +17,14 @@ public class Character : PhysicsBody {
     protected int _moveSign = 1;
     protected CapsuleCollider _collider;
     protected bool _isDying = false;
+    protected float _startHealth;
 
     // Use this for initialization
     public override void Awake () {
         base.Awake();
         _bodyAnimator = body.GetComponent<Animator>();
-        _collider = body.GetComponentInChildren<CapsuleCollider>();
+        _collider = GetComponentInChildren<CapsuleCollider>();
+        _startHealth = health;
     }
 
     public override void Start()
@@ -49,8 +52,16 @@ public class Character : PhysicsBody {
     public override void Reset()
     {
         base.Reset();
-        body.GetComponent<MeshRenderer>().enabled = true;
+        Util.ShowHierarchy(transform, true);
         _collider.enabled = true;
+        health = _startHealth;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+            StartCoroutine(Die());
     }
 
     protected void ClampVelocity(float horizontalDeceleration = 1)
@@ -84,7 +95,7 @@ public class Character : PhysicsBody {
 
         _isDying = true;
 
-        body.GetComponent<MeshRenderer>().enabled = false;
+        Util.ShowHierarchy(transform, false);
         _rigidBody.isKinematic = true;
         _collider.enabled = false;
 
