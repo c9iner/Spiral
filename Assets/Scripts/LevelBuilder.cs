@@ -18,12 +18,15 @@ public class LevelBuilder : MonoBehaviour {
     public float acceleration = 0.1f;
     public float waveFrequency1 = 0.01f;
     public float waveScale1 = 0.03f;
+    public float wavePhase1 = 0;
     public float waveFrequency2 = 0.01f;
     public float waveScale2 = 0.02f;
+    public float wavePhase2 = 0;
 
     private void Start()
     {
         UpdateMesh();
+        transform.Translate(0, 0, -0.001f);
     }
 
     private void Update()
@@ -52,6 +55,8 @@ public class LevelBuilder : MonoBehaviour {
 
         vertices[0] = new Vector3(0, 0, 0);
         vertices[1] = new Vector3(width, 0, 0);
+        vertices[2] = new Vector3(0, 0, depth);
+        vertices[3] = new Vector3(width, 0, depth);
         normals[0] = -Vector3.forward;
         normals[1] = -Vector3.forward;
 
@@ -62,8 +67,8 @@ public class LevelBuilder : MonoBehaviour {
         float cosTheta = 0;
         for (int i=2, j=0; i < numPanels+2; i+=2, j+=6)
         {
-            var path = Mathf.Sin(i * depth * waveFrequency1) * Random.Range(waveScale1, waveScale2);
-            path += Mathf.Sin(i * depth * waveFrequency2) * Random.Range(waveScale1, waveScale2);
+            var path = Mathf.Sin(i * waveFrequency1 + wavePhase1);// * Random.Range(waveScale1, waveScale2);
+            path += Mathf.Sin(i * waveFrequency2 + wavePhase2);// * Random.Range(waveScale1, waveScale2);
             angle = path + Mathf.Deg2Rad * Random.Range(angleRangeMin, angleRangeMax);
 
             sinTheta = Mathf.Sin(angle);
