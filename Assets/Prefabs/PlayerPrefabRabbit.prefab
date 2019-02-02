@@ -441,7 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4337274399410664}
   m_Layer: 0
-  m_Name: PlayerPrefab2
+  m_Name: PlayerPrefabRabbit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2135,6 +2135,7 @@ MonoBehaviour:
   maxSpeed: 10
   maxJumpSpeed: 12
   jump: 500
+  health: 100
   body: {fileID: 1480969410413154}
   dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 2}
   wallJump: 500
