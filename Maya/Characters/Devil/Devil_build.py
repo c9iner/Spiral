@@ -93,13 +93,12 @@ def ExportAnimation():
                        simulation=True,
                        sampleBy=1.,
                        shape=0,
-                       time=(1,2),
+                       time=(1,20),
                        preserveOutsideKeys=1,
                        sparseAnimCurveBake=0,
                        destinationLayer=BAOL.bakeLayer,
                        hierarchy="above")
         
         pm.select(exportable_objs)
-        EXP._export_anim_to_fbx([1,2], 'D:\GameProgramming\Spiral\Assets\Models\Characters\Devil\Devil_walk_jnt.fbx', verbose=True)
+        EXP._export_anim_to_fbx([1,20], 'D:\GameProgramming\Spiral\Assets\Models\Characters\Devil\Devil_walk_anim.fbx', verbose=True)
         
-ExportAnimation()

@@ -1,76 +1,183 @@
 fileFormatVersion: 2
-guid: 34239c30b5ce3984f8894e42490191ad
+guid: b43f9c5303462b744a2d02bf318c7ae2
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
-    100000: Devil:L_foot_jnt
-    100002: Devil:L_legEnd_jnt
-    100004: Devil:L_loLeg_jnt
-    100006: Devil:L_toe_jnt
-    100008: Devil:L_toeTip_jnt
-    100010: Devil:L_upLeg_jnt
-    100012: Devil:M_headTip_jnt
-    100014: Devil:M_hips_jnt
-    100016: Devil:M_mouth_jnt
-    100018: Devil:M_root_jnt
-    100020: Devil:M_tail_0_jnt
-    100022: Devil:M_tail_10_jnt
-    100024: Devil:M_tail_11_jnt
-    100026: Devil:M_tail_12_jnt
-    100028: Devil:M_tail_13_jnt
-    100030: Devil:M_tail_1_jnt
-    100032: Devil:M_tail_2_jnt
-    100034: Devil:M_tail_3_jnt
-    100036: Devil:M_tail_4_jnt
-    100038: Devil:M_tail_5_jnt
-    100040: Devil:M_tail_6_jnt
-    100042: Devil:M_tail_7_jnt
-    100044: Devil:M_tail_8_jnt
-    100046: Devil:M_tail_9_jnt
-    100048: Devil:R_foot_jnt
-    100050: Devil:R_legEnd_jnt
-    100052: Devil:R_loLeg_jnt
-    100054: Devil:R_toe_jnt
-    100056: Devil:R_toeTip_jnt
-    100058: Devil:R_upLeg_jnt
-    100060: //RootNode
-    400000: Devil:L_foot_jnt
-    400002: Devil:L_legEnd_jnt
-    400004: Devil:L_loLeg_jnt
-    400006: Devil:L_toe_jnt
-    400008: Devil:L_toeTip_jnt
-    400010: Devil:L_upLeg_jnt
-    400012: Devil:M_headTip_jnt
-    400014: Devil:M_hips_jnt
-    400016: Devil:M_mouth_jnt
-    400018: Devil:M_root_jnt
-    400020: Devil:M_tail_0_jnt
-    400022: Devil:M_tail_10_jnt
-    400024: Devil:M_tail_11_jnt
-    400026: Devil:M_tail_12_jnt
-    400028: Devil:M_tail_13_jnt
-    400030: Devil:M_tail_1_jnt
-    400032: Devil:M_tail_2_jnt
-    400034: Devil:M_tail_3_jnt
-    400036: Devil:M_tail_4_jnt
-    400038: Devil:M_tail_5_jnt
-    400040: Devil:M_tail_6_jnt
-    400042: Devil:M_tail_7_jnt
-    400044: Devil:M_tail_8_jnt
-    400046: Devil:M_tail_9_jnt
-    400048: Devil:R_foot_jnt
-    400050: Devil:R_legEnd_jnt
-    400052: Devil:R_loLeg_jnt
-    400054: Devil:R_toe_jnt
-    400056: Devil:R_toeTip_jnt
-    400058: Devil:R_upLeg_jnt
-    400060: //RootNode
-    7400000: Take 001
+    100000: Devil:L_foot__space
+    100002: Devil:L_foot_con
+    100004: Devil:L_foot_jnt
+    100006: Devil:L_leg_ik
+    100008: Devil:L_legEnd_jnt
+    100010: Devil:L_legIkPole_con
+    100012: Devil:L_legIkPole_space
+    100014: Devil:L_loLeg_jnt
+    100016: Devil:L_toe__space
+    100018: Devil:L_toe_con
+    100020: Devil:L_toe_jnt
+    100022: Devil:L_toeTip_jnt
+    100024: Devil:L_upLeg_jnt
+    100026: Devil:M_body_geo
+    100028: Devil:M_cog__space
+    100030: Devil:M_cog_con
+    100032: Devil:M_headTip_jnt
+    100034: Devil:M_hips__space
+    100036: Devil:M_hips_con
+    100038: Devil:M_hips_jnt
+    100040: Devil:M_mouth__space
+    100042: Devil:M_mouth_con
+    100044: Devil:M_mouth_jnt
+    100046: Devil:M_root__space
+    100048: Devil:M_root_con
+    100050: Devil:M_root_jnt
+    100052: Devil:M_tail_0__space
+    100054: Devil:M_tail_0_con
+    100056: Devil:M_tail_0_jnt
+    100058: Devil:M_tail_10__space
+    100060: Devil:M_tail_10_con
+    100062: Devil:M_tail_10_jnt
+    100064: Devil:M_tail_11__space
+    100066: Devil:M_tail_11_con
+    100068: Devil:M_tail_11_jnt
+    100070: Devil:M_tail_12__space
+    100072: Devil:M_tail_12_con
+    100074: Devil:M_tail_12_jnt
+    100076: Devil:M_tail_13__space
+    100078: Devil:M_tail_13_con
+    100080: Devil:M_tail_13_jnt
+    100082: Devil:M_tail_1__space
+    100084: Devil:M_tail_1_con
+    100086: Devil:M_tail_1_jnt
+    100088: Devil:M_tail_2__space
+    100090: Devil:M_tail_2_con
+    100092: Devil:M_tail_2_jnt
+    100094: Devil:M_tail_3__space
+    100096: Devil:M_tail_3_con
+    100098: Devil:M_tail_3_jnt
+    100100: Devil:M_tail_4__space
+    100102: Devil:M_tail_4_con
+    100104: Devil:M_tail_4_jnt
+    100106: Devil:M_tail_5__space
+    100108: Devil:M_tail_5_con
+    100110: Devil:M_tail_5_jnt
+    100112: Devil:M_tail_6__space
+    100114: Devil:M_tail_6_con
+    100116: Devil:M_tail_6_jnt
+    100118: Devil:M_tail_7__space
+    100120: Devil:M_tail_7_con
+    100122: Devil:M_tail_7_jnt
+    100124: Devil:M_tail_8__space
+    100126: Devil:M_tail_8_con
+    100128: Devil:M_tail_8_jnt
+    100130: Devil:M_tail_9__space
+    100132: Devil:M_tail_9_con
+    100134: Devil:M_tail_9_jnt
+    100136: Devil:R_foot__space
+    100138: Devil:R_foot_con
+    100140: Devil:R_foot_jnt
+    100142: Devil:R_leg_ik
+    100144: Devil:R_legEnd_jnt
+    100146: Devil:R_legIkPole_con
+    100148: Devil:R_legIkPole_space
+    100150: Devil:R_loLeg_jnt
+    100152: Devil:R_toe__space
+    100154: Devil:R_toe_con
+    100156: Devil:R_toe_jnt
+    100158: Devil:R_toeTip_jnt
+    100160: Devil:R_upLeg_jnt
+    100162: //RootNode
+    400000: Devil:L_foot__space
+    400002: Devil:L_foot_con
+    400004: Devil:L_foot_jnt
+    400006: Devil:L_leg_ik
+    400008: Devil:L_legEnd_jnt
+    400010: Devil:L_legIkPole_con
+    400012: Devil:L_legIkPole_space
+    400014: Devil:L_loLeg_jnt
+    400016: Devil:L_toe__space
+    400018: Devil:L_toe_con
+    400020: Devil:L_toe_jnt
+    400022: Devil:L_toeTip_jnt
+    400024: Devil:L_upLeg_jnt
+    400026: Devil:M_body_geo
+    400028: Devil:M_cog__space
+    400030: Devil:M_cog_con
+    400032: Devil:M_headTip_jnt
+    400034: Devil:M_hips__space
+    400036: Devil:M_hips_con
+    400038: Devil:M_hips_jnt
+    400040: Devil:M_mouth__space
+    400042: Devil:M_mouth_con
+    400044: Devil:M_mouth_jnt
+    400046: Devil:M_root__space
+    400048: Devil:M_root_con
+    400050: Devil:M_root_jnt
+    400052: Devil:M_tail_0__space
+    400054: Devil:M_tail_0_con
+    400056: Devil:M_tail_0_jnt
+    400058: Devil:M_tail_10__space
+    400060: Devil:M_tail_10_con
+    400062: Devil:M_tail_10_jnt
+    400064: Devil:M_tail_11__space
+    400066: Devil:M_tail_11_con
+    400068: Devil:M_tail_11_jnt
+    400070: Devil:M_tail_12__space
+    400072: Devil:M_tail_12_con
+    400074: Devil:M_tail_12_jnt
+    400076: Devil:M_tail_13__space
+    400078: Devil:M_tail_13_con
+    400080: Devil:M_tail_13_jnt
+    400082: Devil:M_tail_1__space
+    400084: Devil:M_tail_1_con
+    400086: Devil:M_tail_1_jnt
+    400088: Devil:M_tail_2__space
+    400090: Devil:M_tail_2_con
+    400092: Devil:M_tail_2_jnt
+    400094: Devil:M_tail_3__space
+    400096: Devil:M_tail_3_con
+    400098: Devil:M_tail_3_jnt
+    400100: Devil:M_tail_4__space
+    400102: Devil:M_tail_4_con
+    400104: Devil:M_tail_4_jnt
+    400106: Devil:M_tail_5__space
+    400108: Devil:M_tail_5_con
+    400110: Devil:M_tail_5_jnt
+    400112: Devil:M_tail_6__space
+    400114: Devil:M_tail_6_con
+    400116: Devil:M_tail_6_jnt
+    400118: Devil:M_tail_7__space
+    400120: Devil:M_tail_7_con
+    400122: Devil:M_tail_7_jnt
+    400124: Devil:M_tail_8__space
+    400126: Devil:M_tail_8_con
+    400128: Devil:M_tail_8_jnt
+    400130: Devil:M_tail_9__space
+    400132: Devil:M_tail_9_con
+    400134: Devil:M_tail_9_jnt
+    400136: Devil:R_foot__space
+    400138: Devil:R_foot_con
+    400140: Devil:R_foot_jnt
+    400142: Devil:R_leg_ik
+    400144: Devil:R_legEnd_jnt
+    400146: Devil:R_legIkPole_con
+    400148: Devil:R_legIkPole_space
+    400150: Devil:R_loLeg_jnt
+    400152: Devil:R_toe__space
+    400154: Devil:R_toe_con
+    400156: Devil:R_toe_jnt
+    400158: Devil:R_toeTip_jnt
+    400160: Devil:R_upLeg_jnt
+    400162: //RootNode
+    2100000: lambert1
+    2100002: Devil_blinn1
+    2100004: Devil_blinn2
+    2100006: Devil_lambert2
+    4300000: Devil:M_body_geo
+    7400000: Devil_walk_anim
     9500000: //RootNode
-    2186277476908879412: ImportLogs
+    13700000: Devil:M_body_geo
   externalObjects: {}
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -97,8 +204,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Take 001
-      takeName: Take 001
+      name: Devil_walk_anim
+      takeName: Devil_walk_anim
       firstFrame: 1
       lastFrame: 20
       wrapMode: 0
@@ -123,7 +230,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 1
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -147,8 +254,8 @@ ModelImporter:
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
+    useFileScale: 0
+    previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
@@ -159,7 +266,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   importAnimation: 1
-  copyAvatar: 1
+  copyAvatar: 0
   humanDescription:
     serializedVersion: 2
     human: []
@@ -171,12 +278,11 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: Devil:M_root_jnt
+    rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 1
+    hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: b67c61f212e92914da2510958b332934,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
