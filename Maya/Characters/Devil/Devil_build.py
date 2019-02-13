@@ -81,4 +81,25 @@ except:
     
     
 
-    
+import OSS_exporttools as EXP
+import OSS_scene_utils as SCN
+
+def ExportAnimation():
+        
+    exportable_objs = set(pm.listRelatives('Devil:M_root_jnt', ad=True, type=pm.nt.Joint))
+    with SCN.BakeAnimOverrideLayer() as BAOL:
+        
+        pm.bakeResults(list(exportable_objs),
+                       simulation=True,
+                       sampleBy=1.,
+                       shape=0,
+                       time=(1,2),
+                       preserveOutsideKeys=1,
+                       sparseAnimCurveBake=0,
+                       destinationLayer=BAOL.bakeLayer,
+                       hierarchy="above")
+        
+        pm.select(exportable_objs)
+        EXP._export_anim_to_fbx([1,2], 'D:\GameProgramming\Spiral\Assets\Models\Characters\Devil\Devil_walk_jnt.fbx', verbose=True)
+        
+ExportAnimation()

@@ -1,0 +1,25 @@
+// Exported skin weight map file
+// 
+M_body_geo	M_hips_jnt	M_body_geo_M_hips_jnt.tiff
+M_body_geo	M_mouth_jnt	M_body_geo_M_mouth_jnt.tiff
+M_body_geo	M_tail_0_jnt	M_body_geo_M_tail_0_jnt.tiff
+M_body_geo	M_tail_1_jnt	M_body_geo_M_tail_1_jnt.tiff
+M_body_geo	M_tail_2_jnt	M_body_geo_M_tail_2_jnt.tiff
+M_body_geo	M_tail_3_jnt	M_body_geo_M_tail_3_jnt.tiff
+M_body_geo	M_tail_4_jnt	M_body_geo_M_tail_4_jnt.tiff
+M_body_geo	M_tail_5_jnt	M_body_geo_M_tail_5_jnt.tiff
+M_body_geo	M_tail_6_jnt	M_body_geo_M_tail_6_jnt.tiff
+M_body_geo	M_tail_7_jnt	M_body_geo_M_tail_7_jnt.tiff
+M_body_geo	M_tail_8_jnt	M_body_geo_M_tail_8_jnt.tiff
+M_body_geo	M_tail_9_jnt	M_body_geo_M_tail_9_jnt.tiff
+M_body_geo	M_tail_10_jnt	M_body_geo_M_tail_10_jnt.tiff
+M_body_geo	M_tail_11_jnt	M_body_geo_M_tail_11_jnt.tiff
+M_body_geo	M_tail_12_jnt	M_body_geo_M_tail_12_jnt.tiff
+M_body_geo	L_upLeg_jnt	M_body_geo_L_upLeg_jnt.tiff
+M_body_geo	L_loLeg_jnt	M_body_geo_L_loLeg_jnt.tiff
+M_body_geo	L_foot_jnt	M_body_geo_L_foot_jnt.tiff
+M_body_geo	L_toe_jnt	M_body_geo_L_toe_jnt.tiff
+M_body_geo	R_upLeg_jnt	M_body_geo_R_upLeg_jnt.tiff
+M_body_geo	R_loLeg_jnt	M_body_geo_R_loLeg_jnt.tiff
+M_body_geo	R_foot_jnt	M_body_geo_R_foot_jnt.tiff
+M_body_geo	R_toe_jnt	M_body_geo_R_toe_jnt.tiff
