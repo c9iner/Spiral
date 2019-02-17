@@ -22,4 +22,23 @@ public class Util
         }
     }
 
+    public static Transform FindChildTransform(Transform transform, string childName)
+    {
+        Transform found = null;
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            string name = child.name;
+            if (name.Contains(":"))
+                name = name.Split(':')[1];
+            if (name == childName)
+                found = child;
+            else
+                found = FindChildTransform(child, childName);
+
+            if (found != null)
+                return found;
+        }
+        return found;
+    }
 }

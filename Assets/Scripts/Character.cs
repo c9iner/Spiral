@@ -107,4 +107,33 @@ public class Character : PhysicsBody {
         _isDying = false;
     }
 
+    public void Walk()
+    {
+        _bodyAnimator.SetTrigger("Walk");
+    }
+
+    public void Idle()
+    {
+        _bodyAnimator.SetTrigger("Idle");
+    }
+
+    public void Jump()
+    {
+        _bodyAnimator.SetTrigger("Jump");
+    }
+
+    public void Land()
+    {
+        _bodyAnimator.SetTrigger("Land");
+    }
+
+    public void AirJumpLeft()
+    {
+        _bodyAnimator.SetTrigger("AirJumpLeft");
+    }
+
+    public void AirJumpRight()
+    {
+        _bodyAnimator.SetTrigger("AirJumpRight");
+    }
 }

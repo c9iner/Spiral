@@ -33,12 +33,15 @@ public class Player : Character
     private Vector3 _contactNormal;
     private int _numStarsTaken = 0;
     private bool _jumpNextFrame = false;
+    private Transform _rootJoint;
 
     public override void Awake ()
     {
         base.Awake();
 
         _remainingJumps = maxJumps;
+
+        _rootJoint = Util.FindChildTransform(transform, "M_root_jnt");
     }
 
     public override void Start()
@@ -46,7 +49,8 @@ public class Player : Character
         base.Start();
 
         gameManager = FindObjectOfType<GameManager>();
-        rightController.onTouchDownAction = OnTouchDown;
+        if (rightController)
+            rightController.onTouchDownAction = OnTouchDown;
 
 #if UNITY_STANDALONE
         leftController.gameObject.SetActive(false);
@@ -76,6 +80,17 @@ public class Player : Character
         float directionStrength = Mathf.Abs(leftController.GetTouchPosition.x);
 #endif
 
+        if (_isTouchingGround)
+            if (isLeftPressed || isRightPressed)
+            {
+                Walk();
+                float yRotation = isLeftPressed ? -90 : 90;
+                if (_rootJoint != null)
+                    _rootJoint.localRotation = Quaternion.Euler(new Vector3(0, yRotation, 0));
+            }
+            else
+                Idle();
+
         // Jump
         bool jumpKeyPressed = Input.GetKeyDown(KeyCode.W) || _jumpNextFrame;
         if (_jumpNextFrame)
@@ -97,16 +112,16 @@ public class Player : Character
                 _rigidBody.AddForce(-_gravityVector * jump, ForceMode.Acceleration);
                 if (_isTouchingGround)
                 {
-                    _bodyAnimator.SetTrigger("Jump");
+                    Jump();
                 }
                 else if (!_isTouchingWall)
                 {
                     var leftVector = Vector3.Cross(_gravityVector, new Vector3(0, 0, 1));
                     var leftDot = Vector3.Dot(leftVector, _rigidBody.velocity);
                     if (leftDot > 0.01f)
-                        _bodyAnimator.SetTrigger("AirJumpLeft");
+                        AirJumpLeft();
                     else if (leftDot < -0.01f)
-                        _bodyAnimator.SetTrigger("AirJumpRight");
+                        AirJumpRight();
                 }
             }
             // Wall jump
@@ -196,14 +211,14 @@ public class Player : Character
                 {
                     _groundCollisionObject = col.gameObject;
                     _isTouchingGround = true;
-                    _bodyAnimator.SetTrigger("Land");
+                    Land();
                 }
                 // Wall
                 else if (angleToPlayer < 135)
                 {
                     _wallCollisioObject = col.gameObject;
                     _isTouchingWall = true;
-                    _bodyAnimator.SetTrigger("Neutral");
+                    Idle();
                 }
             }
 
