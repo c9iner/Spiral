@@ -19,25 +19,9 @@ def Build():
     for joint in pm.listRelatives('M_root_jnt', ad=True, type=pm.nt.Joint):
         joint.segmentScaleCompensate.set(0)
         
-    # FK Controls
-    def CreateControlHierarchy(joint, parentCon=None, ignoreList=['Tip', 'upLeg', 'loLeg']):
-        
-        joint = pm.PyNode(joint)
-        if any(x in joint.name() for x in ignoreList):
-            print 'Ignoring ' + joint
-            return
-
-        print joint
-        
-        space, con = CreateControl(joint, parentCon=parentCon, radius=joint.radius.get())
-        
-        for childJoint in pm.listRelatives(joint, type=pm.nt.Joint):
-            CreateControlHierarchy(childJoint, con)
-            
-        return space, con
-        
     rootSpace, rootCon = CreateControl('M_root_jnt', radius=2, normal=[0,1,0])
-    cogSpace, cogCon = CreateControl('M_hips_jnt', name='M_cog_con', parentCon=rootCon, radius=1, constrain=False)
+    rootOffsetSpace, rootOffsetCon = CreateControl('M_root_jnt', name='M_root_offset_con', parentCon=rootCon, radius=1.5, normal=[0,1,0])
+    cogSpace, cogCon = CreateControl('M_hips_jnt', name='M_cog_con', parentCon=rootOffsetCon, radius=1, constrain=False)
     hipSpace, hipCon = CreateControlHierarchy('M_hips_jnt', parentCon=cogCon)
     
     # IK Controls
@@ -56,13 +40,31 @@ def Build():
 
         footSpace, footCon = CreateControlHierarchy(side+'_foot_jnt', rootCon)
         pm.parentConstraint(footCon, ikHandle)
+
+
+# FK Controls
+def CreateControlHierarchy(joint, parentCon=None, ignoreList=['Tip', 'upLeg', 'loLeg']):
     
+    joint = pm.PyNode(joint)
+    if any(x in joint.name() for x in ignoreList):
+        print 'Ignoring ' + joint
+        return
+
+    print joint
     
+    space, con = CreateControl(joint, parentCon=parentCon, radius=joint.radius.get())
+    
+    for childJoint in pm.listRelatives(joint, type=pm.nt.Joint):
+        CreateControlHierarchy(childJoint, con)
+        
+    return space, con
+
+
 def CreateControl(joint, name='', parentCon=None, constrain=True, radius=1, normal=[1,0,0]):
     
     conName = name if name != '' else joint.replace('jnt', 'con')
     con = pm.circle(n=conName, r=radius, normal=normal)[0]
-    space = pm.group(con, n=con.replace('con','_space'))
+    space = pm.group(con, n=con.replace('con','space'))
     
     if parentCon != None:
         pm.parent(space, parentCon)

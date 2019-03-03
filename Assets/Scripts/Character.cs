@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Character : PhysicsBody {
 
+    
     public float acceleration = 100;
     public float deceleration = 0.9f;
     public float maxSpeed = 10;
@@ -12,6 +13,7 @@ public class Character : PhysicsBody {
     public float health = 100;
     public GameObject body;
     public GameObject dieFX;
+    public bool isRootMotionEnabled = false;
 
     protected Animator _bodyAnimator;
     protected int _moveSign = 1;
@@ -47,6 +49,10 @@ public class Character : PhysicsBody {
             float alignAngle = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(new Vector3(0, 1, 0), -_gravityVector));
             transform.rotation = Quaternion.Euler(0, 0, alignAngle * rotateSign);
         }
+    }
+
+    public virtual void LateUpdate()
+    {
     }
 
     public override void Reset()
@@ -109,12 +115,14 @@ public class Character : PhysicsBody {
 
     public void Walk()
     {
-        _bodyAnimator.SetTrigger("Walk");
+        if (!_bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Walk"))
+            _bodyAnimator.SetTrigger("Walk");
     }
 
     public void Idle()
     {
-        _bodyAnimator.SetTrigger("Idle");
+        if (!_bodyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            _bodyAnimator.SetTrigger("Idle");
     }
 
     public void Jump()

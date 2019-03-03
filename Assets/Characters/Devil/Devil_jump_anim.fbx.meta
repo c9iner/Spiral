@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1975eb75dae217c46afcf4bb9ddfbe0d
+guid: 47a958a586588ae4587af163a441bfc8
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -85,6 +85,8 @@ ModelImporter:
     100158: Devil:R_toeTip_jnt
     100160: Devil:R_upLeg_jnt
     100162: //RootNode
+    100164: Devil:M_root_offset_con
+    100166: Devil:M_root_offset_space
     400000: Devil:L_foot__space
     400002: Devil:L_foot_con
     400004: Devil:L_foot_jnt
@@ -167,12 +169,15 @@ ModelImporter:
     400158: Devil:R_toeTip_jnt
     400160: Devil:R_upLeg_jnt
     400162: //RootNode
+    400164: Devil:M_root_offset_con
+    400166: Devil:M_root_offset_space
     2100000: lambert1
     2100002: Devil_blinn1
     2100004: Devil_blinn2
     2100006: Devil_lambert2
     4300000: Devil:M_body_geo
-    7400000: Devil_idle_anim
+    7400000: Devil_jump_anim
+    7400002: Devil_land_anim
     9500000: //RootNode
     13700000: Devil:M_body_geo
   externalObjects: {}
@@ -186,7 +191,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: 
+    motionNodeName: <Root Transform>
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -204,17 +209,17 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Devil_idle_anim
-      takeName: Devil_idle_anim
+      name: Devil_jump_anim
+      takeName: Devil_jump_anim
       firstFrame: 0
-      lastFrame: 39
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -255,7 +260,7 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 0
-    previousCalculatedGlobalScale: 0.01
+    previousCalculatedGlobalScale: 1
     hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
@@ -278,7 +283,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    rootMotionBoneName: 
+    rootMotionBoneName: Devil:M_root_jnt
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

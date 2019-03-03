@@ -7,6 +7,8 @@ public class Player : Character
 {
     public float wallJump = 1000;
     public int maxJumps = 2;
+    public float minAirTimeDuration = 1f;
+    public float minWalkReleasedDuration = 0.2f;
     public float furryness = 5.5f;
     public float eyeSize = 3.2f;
     public int numEyes = 3;
@@ -27,9 +29,11 @@ public class Player : Character
     private bool _didJumpOffLeftWall = false;
     private bool _didJumpOffRightWall = false;
     public bool _isTouchingGround = false;
+    private float _inAirTimer = 0;
+    private float _walkReleasedTimer = 0;
     private GameObject _groundCollisionObject;
     public bool _isTouchingWall = false;
-    private GameObject _wallCollisioObject;
+    private GameObject _wallCollisionObject;
     private Vector3 _contactNormal;
     private int _numStarsTaken = 0;
     private bool _jumpNextFrame = false;
@@ -42,6 +46,8 @@ public class Player : Character
         _remainingJumps = maxJumps;
 
         _rootJoint = Util.FindChildTransform(transform, "M_root_jnt");
+
+        SetDirection();
     }
 
     public override void Start()
@@ -79,17 +85,29 @@ public class Player : Character
         bool isRightPressed = leftController.GetTouchPosition.x > 0;
         float directionStrength = Mathf.Abs(leftController.GetTouchPosition.x);
 #endif
+        if (isLeftPressed || isRightPressed)
+            SetDirection(isLeftPressed);
 
         if (_isTouchingGround)
+        {
             if (isLeftPressed || isRightPressed)
             {
                 Walk();
-                float yRotation = isLeftPressed ? -90 : 90;
-                if (_rootJoint != null)
-                    _rootJoint.localRotation = Quaternion.Euler(new Vector3(0, yRotation, 0));
             }
             else
-                Idle();
+            {
+                if (_walkReleasedTimer > minWalkReleasedDuration)
+                {
+                    _walkReleasedTimer = 0;
+                    Idle();
+                }
+                _walkReleasedTimer += Time.deltaTime;
+            }
+        }
+        else
+        {
+            _inAirTimer += Time.deltaTime;
+        }
 
         // Jump
         bool jumpKeyPressed = Input.GetKeyDown(KeyCode.W) || _jumpNextFrame;
@@ -155,7 +173,19 @@ public class Player : Character
             var deceleration = _didJumpOffRightWall ? _wallJumpDeceleration : 1;
             _rigidBody.AddForce(rightVector * acceleration * deceleration * directionStrength * Time.deltaTime, ForceMode.Acceleration);
         }
+    }
 
+    public override void LateUpdate()
+    {
+        if (!isRootMotionEnabled && _rootJoint != null)
+            _rootJoint.localPosition = Vector3.zero;
+    }
+
+    public void SetDirection(bool left=true)
+    {
+        float yRotation = left ? -90 : 90;
+        if (_rootJoint != null)
+            _rootJoint.localRotation = Quaternion.Euler(new Vector3(0, yRotation, 0));
     }
 
     public override void Reset()
@@ -191,44 +221,6 @@ public class Player : Character
         return false;
     }
 
-    void OnCollisionEnter(Collision col)
-    {
-        // EnemyQuard
-        if (col.gameObject.GetComponentInParent<EnemyGuard>())
-        {
-            StartCoroutine(Die());
-        }
-        // Detect Walls and Ground
-        else
-        {
-            foreach (var contact in col.contacts)
-            {
-                var angleToPlayer = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(contact.normal, transform.up));
-                _contactNormal = contact.normal;
-
-                // Ground
-                if (angleToPlayer < 45)
-                {
-                    _groundCollisionObject = col.gameObject;
-                    _isTouchingGround = true;
-                    Land();
-                }
-                // Wall
-                else if (angleToPlayer < 135)
-                {
-                    _wallCollisioObject = col.gameObject;
-                    _isTouchingWall = true;
-                    Idle();
-                }
-            }
-
-            if (_isTouchingGround)
-                _remainingJumps = maxJumps;
-            else if (_isTouchingWall)
-                _remainingJumps = 1;
-        }
-    }
-
     void OnTriggerEnter(Collider col)
     {
         // Goal
@@ -236,11 +228,13 @@ public class Player : Character
         {
             gameManager.ResetLevel();
         }
+
         // Gravity Flip
-        else if (gravityWell && col.gameObject == gravityWell.gravityFlip)
+        if (gravityWell && col.gameObject == gravityWell.gravityFlip)
         {
             gravityWell.gravityDirection *= -1;
         }
+
         // Star
         var star = col.gameObject.GetComponentInParent<Star>();
         if (star)
@@ -248,6 +242,44 @@ public class Player : Character
             star.Touched();
             _numStarsTaken++;
         }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        // EnemyQuard
+        if (col.gameObject.GetComponentInParent<EnemyGuard>())
+        {
+            StartCoroutine(Die());
+        }
+
+        // Detect Walls and Ground
+        var contact = col.contacts[0];        
+        var angleToPlayer = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(contact.normal, transform.up));
+        _contactNormal = contact.normal;
+            
+        // Ground
+        if (angleToPlayer < 45)
+        {
+            _groundCollisionObject = col.gameObject;
+            _isTouchingGround = true;
+            if (_inAirTimer > minAirTimeDuration)
+            {
+                minAirTimeDuration = 0;
+                Land();
+            }
+        }
+        // Wall
+        else if (angleToPlayer < 135)
+        {
+            _wallCollisionObject = col.gameObject;
+            _isTouchingWall = true;
+            Idle();
+        }
+
+        if (_isTouchingGround)
+            _remainingJumps = maxJumps;
+        else if (_isTouchingWall)
+            _remainingJumps = 1;
     }
 
     void OnCollisionStay(Collision col)
@@ -273,12 +305,13 @@ public class Player : Character
         if (col.gameObject == _groundCollisionObject)
         {
             _isTouchingGround = false;
+            _inAirTimer = 0;
             _groundCollisionObject = null;
         }
-        if (col.gameObject == _wallCollisioObject)
+        if (col.gameObject == _wallCollisionObject)
         {
             _isTouchingWall = false;
-            _wallCollisioObject = null;
+            _wallCollisionObject = null;
             _isWallJumping = false;
         }
     }

@@ -392,8 +392,11 @@ MonoBehaviour:
   health: 100
   body: {fileID: 0}
   dieFX: {fileID: 1842577361010422, guid: 08c58b2016dd42f489767177b619c58a, type: 3}
+  isRootMotionEnabled: 0
   wallJump: 500
   maxJumps: 2
+  minAirTimeDuration: 0.5
+  minWalkReleasedDuration: 0.5
   furryness: 5.5
   eyeSize: 3.2
   numEyes: 3
